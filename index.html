@@ -3,11 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>IPIN FILE HUB</title>
+  <meta name="description" content="IPIN FILE HUB – Koleksi file bot dan tools.">
+  <meta name="theme-color" content="#0b0e14">
+
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
+
 <body>
-  <div class="bg" aria-hidden="true">
+  <div class="bg">
     <span class="blob b1"></span>
     <span class="blob b2"></span>
     <span class="blob b3"></span>
@@ -16,8 +22,9 @@
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand-mini">IPIN FILE HUB</div>
-      <button class="theme-toggle" id="themeBtn" type="button" aria-label="Toggle theme">
-        <span class="theme-label" id="themeLabel">Dark</span>
+
+      <button class="theme-toggle" id="themeBtn">
+        <span id="themeLabel">Dark</span>
         <span class="switch"><span class="knob"></span></span>
       </button>
     </div>
@@ -28,14 +35,14 @@
       <div class="hero-badge">Repository</div>
       <h1 class="hero-title">IPIN SCRIPT</h1>
       <p class="hero-subtitle">
-        Koleksi file bot dan tools. Pilih dari daftar, lihat detail, lalu unduh.
+        Koleksi file bot dan tools. Cari, lihat detail, lalu unduh.
       </p>
 
       <div class="hero-actions">
-        <a class="join" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">Grup WhatsApp</a>
-        <a class="join" href="https://whatsapp.com/channel/0029VbBKScNAInPfll7NHM0O" target="_blank" rel="noopener">Channel WhatsApp</a>
-        <a class="join" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
-        <a class="join" href="https://youtube.com/@PinshopCik" target="_blank" rel="noopener">YouTube</a>
+        <a class="join" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank">Grup WhatsApp</a>
+        <a class="join" href="https://whatsapp.com/channel/0029VbBKScNAInPfll7NHM0O" target="_blank">Channel WhatsApp</a>
+        <a class="join" href="https://t.me/IPINSHOP" target="_blank">Telegram</a>
+        <a class="join" href="https://youtube.com/@PinshopCik" target="_blank">YouTube</a>
       </div>
 
       <div class="hero-stats">
@@ -51,186 +58,122 @@
     </section>
 
     <section class="panel reveal">
-      <div class="panel-row">
-        <input id="q" class="search" placeholder="Cari file..." />
-        <button class="btn ghost" id="infoBtn" type="button">Info</button>
-      </div>
+      <input id="q" class="search" placeholder="Cari file..." />
       <div id="list" class="grid"></div>
-      <div id="empty" class="empty" style="display:none;">Tidak ada hasil.</div>
-      <div id="err" class="empty" style="display:none;">data.js tidak terbaca. Pastikan file ada di root project.</div>
+      <div id="empty" class="empty">Tidak ada hasil.</div>
     </section>
 
     <footer class="footer">© IPIN FILE HUB</footer>
   </main>
 
-  <!-- Modal -->
-  <div class="overlay" id="overlay" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
+  <!-- MODAL -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
       <div class="modal-top">
-        <div class="modal-title" id="mTitle">Detail</div>
-        <button class="x" id="mClose" type="button" aria-label="Close">×</button>
+        <b id="mTitle">Detail</b>
+        <button id="mClose">✕</button>
       </div>
-      <div class="modal-body">
-        <div class="kv"><span>Nama</span><b id="mName">-</b></div>
-        <div class="kv"><span>Update</span><b id="mUpdated">-</b></div>
-        <div class="kv"><span>Ukuran</span><b id="mSize">-</b></div>
-        <div class="kv"><span>Tag</span><b id="mTags">-</b></div>
-        <p class="modal-desc" id="mDesc">-</p>
-      </div>
+
+      <p id="mDesc"></p>
+
       <div class="modal-actions">
-        <a class="btn ghost" id="mTelegram" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
-        <a class="btn primary" id="mDownload" target="_blank" rel="noopener">Download</a>
+        <a id="mTelegram" class="btn ghost" target="_blank">Telegram</a>
+        <a id="mDownload" class="btn primary" target="_blank">Download</a>
       </div>
     </div>
   </div>
 
   <script src="data.js"></script>
   <script>
-    // Theme
+    /* THEME */
     const root = document.documentElement;
-    const themeBtn = document.getElementById("themeBtn");
-    const themeLabel = document.getElementById("themeLabel");
-    const saved = localStorage.getItem("ipin_theme") || "dark";
+    const btn = document.getElementById("themeBtn");
+    const lbl = document.getElementById("themeLabel");
+    const saved = localStorage.getItem("theme") || "dark";
     root.setAttribute("data-theme", saved);
-    themeLabel.textContent = saved === "dark" ? "Dark" : "Light";
-    themeBtn.addEventListener("click", () => {
-      const cur = root.getAttribute("data-theme") || "light";
-      const next = cur === "dark" ? "light" : "dark";
+    lbl.textContent = saved === "dark" ? "Dark" : "Light";
+
+    btn.onclick = () => {
+      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
       root.setAttribute("data-theme", next);
-      localStorage.setItem("ipin_theme", next);
-      themeLabel.textContent = next === "dark" ? "Dark" : "Light";
-    });
-
-    // Download count (simple: per device)
-    const totalDlEl = document.getElementById("totalDl");
-    const totalFilesEl = document.getElementById("totalFiles");
-    const getTotal = () => Number(localStorage.getItem("ipin_total_dl") || 0);
-    const incTotal = () => {
-      const n = getTotal() + 1;
-      localStorage.setItem("ipin_total_dl", String(n));
-      totalDlEl.textContent = n;
-    };
-    totalDlEl.textContent = getTotal();
-
-    const getPer = (id) => Number(localStorage.getItem("ipin_dl_" + id) || 0);
-    const incPer = (id) => {
-      const n = getPer(id) + 1;
-      localStorage.setItem("ipin_dl_" + id, String(n));
-      return n;
+      localStorage.setItem("theme", next);
+      lbl.textContent = next === "dark" ? "Dark" : "Light";
     };
 
-    // Modal
+    /* COUNTER */
+    const totalDl = document.getElementById("totalDl");
+    const totalFiles = document.getElementById("totalFiles");
+    totalDl.textContent = localStorage.getItem("total") || 0;
+
+    function incTotal() {
+      let n = Number(localStorage.getItem("total") || 0) + 1;
+      localStorage.setItem("total", n);
+      totalDl.textContent = n;
+    }
+
+    /* MODAL */
     const overlay = document.getElementById("overlay");
     const mClose = document.getElementById("mClose");
     const mTitle = document.getElementById("mTitle");
-    const mName = document.getElementById("mName");
-    const mUpdated = document.getElementById("mUpdated");
-    const mSize = document.getElementById("mSize");
-    const mTags = document.getElementById("mTags");
     const mDesc = document.getElementById("mDesc");
     const mDownload = document.getElementById("mDownload");
+    const mTelegram = document.getElementById("mTelegram");
 
-    function openModal(item){
-      mTitle.textContent = "Detail";
-      mName.textContent = item.name || "-";
-      mUpdated.textContent = item.updated || "-";
-      mSize.textContent = item.size || "-";
-      mTags.textContent = (item.tags || []).join(", ") || "-";
-      mDesc.textContent = item.desc || "-";
-      mDownload.href = item.link || "#";
-      overlay.classList.add("show");
-      overlay.setAttribute("aria-hidden","false");
-    }
-    function closeModal(){
-      overlay.classList.remove("show");
-      overlay.setAttribute("aria-hidden","true");
-    }
-    overlay.addEventListener("click",(e)=>{ if(e.target===overlay) closeModal(); });
-    mClose.addEventListener("click", closeModal);
+    mClose.onclick = () => overlay.classList.remove("show");
+    overlay.onclick = e => e.target === overlay && overlay.classList.remove("show");
 
-    // Render
-    const listEl = document.getElementById("list");
-    const emptyEl = document.getElementById("empty");
-    const errEl = document.getElementById("err");
-    const qEl = document.getElementById("q");
+    /* RENDER */
+    const list = document.getElementById("list");
+    const empty = document.getElementById("empty");
+    const q = document.getElementById("q");
 
-    function esc(s){
-      return String(s||"")
-        .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-    }
+    function render(filter="") {
+      list.innerHTML = "";
+      const f = filter.toLowerCase();
+      const data = window.scripts || [];
+      totalFiles.textContent = data.length;
 
-    function data(){
-      if (Array.isArray(window.scripts)) return window.scripts;
-      return null;
-    }
+      const items = data.filter(x =>
+        (x.name + x.desc).toLowerCase().includes(f)
+      );
 
-    function render(filter=""){
-      const d = data();
-      if (!d){
-        errEl.style.display = "block";
-        emptyEl.style.display = "none";
-        listEl.innerHTML = "";
-        totalFilesEl.textContent = "0";
-        return;
-      }
+      empty.style.display = items.length ? "none" : "block";
 
-      errEl.style.display = "none";
-      totalFilesEl.textContent = d.length;
-
-      const f = filter.trim().toLowerCase();
-      const items = d.filter(x => (x.name + " " + x.desc + " " + (x.tags||[]).join(" ")).toLowerCase().includes(f));
-      emptyEl.style.display = items.length ? "none" : "block";
-      listEl.innerHTML = "";
-
-      items.forEach((it, i) => {
-        const per = getPer(it.id || it.name);
-        const card = document.createElement("article");
+      items.forEach(sc => {
+        const card = document.createElement("div");
         card.className = "card reveal";
-        card.style.animationDelay = (i * 0.05) + "s";
         card.innerHTML = `
-          <div class="card-top">
-            <div class="file-icon" aria-hidden="true"></div>
-            <div class="card-title">${esc(it.name)}</div>
-            <div class="badge">Free</div>
-          </div>
-          <div class="card-desc">${esc(it.desc)}</div>
+          <h3>${sc.name}</h3>
+          <p>${sc.desc}</p>
           <div class="card-bottom">
             <button class="btn primary">Download</button>
             <button class="btn ghost">Detail</button>
-            <div class="dl">Downloaded: <b>${per}</b></div>
           </div>
         `;
 
-        const idKey = it.id || it.name;
-        card.querySelector(".btn.primary").addEventListener("click", () => {
-          const n = incPer(idKey);
-          card.querySelector(".dl b").textContent = n;
+        card.querySelector(".primary").onclick = () => {
           incTotal();
-          window.location.href = it.link;
-        });
+          window.open(sc.link, "_blank");
+        };
 
-        card.querySelector(".btn.ghost").addEventListener("click", () => openModal(it));
-        listEl.appendChild(card);
+        card.querySelector(".ghost").onclick = () => {
+          mTitle.textContent = sc.name;
+          mDesc.textContent = sc.desc;
+          mDownload.href = sc.link;
+          mTelegram.href = "https://t.me/IPINSHOP";
+          overlay.classList.add("show");
+        };
+
+        list.appendChild(card);
       });
-
-      // animate reveal (simple)
-      document.querySelectorAll(".reveal").forEach(el => el.classList.add("in"));
     }
 
-    qEl.addEventListener("input", () => render(qEl.value));
-    document.getElementById("infoBtn").addEventListener("click", () => {
-      openModal({
-        name: "Informasi",
-        updated: "-",
-        size: "-",
-        tags: ["WhatsApp", "Telegram", "YouTube"],
-        desc: "Gunakan pencarian untuk menemukan file. Tombol Detail untuk info singkat, Download untuk membuka link.",
-        link: "https://t.me/IPINSHOP"
-      });
-    });
-
+    q.oninput = () => render(q.value);
     render();
+
+    requestAnimationFrame(() =>
+      document.querySelectorAll(".reveal").forEach(e => e.classList.add("in"))
+    );
   </script>
 </body>
 </html>
