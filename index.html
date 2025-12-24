@@ -1,236 +1,235 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IPIN SCRIPT</title>
+  <title>IPIN FILE HUB</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <div class="bg-blobs" aria-hidden="true">
+  <div class="bg" aria-hidden="true">
     <span class="blob b1"></span>
     <span class="blob b2"></span>
     <span class="blob b3"></span>
   </div>
 
-  <div class="wrap">
-    <header class="top">
-      <div class="brand">
-        <div class="kicker">✨ IPIN FILE HUB</div>
-        <h1>IPIN SCRIPT</h1>
-        <p>Kumpulan script gratis by IPIN — klik download, gas. Join komunitas biar dapet update 🔥</p>
-      </div>
-
-      <button class="theme" id="themeBtn" type="button" title="Mode gelap/terang">
-        <span class="themeIcon" id="themeIcon">🌞</span>
-        <span class="themeTrack"><span class="themeDot"></span></span>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-mini">IPIN FILE HUB</div>
+      <button class="theme-toggle" id="themeBtn" type="button" aria-label="Toggle theme">
+        <span class="theme-label" id="themeLabel">Dark</span>
+        <span class="switch"><span class="knob"></span></span>
       </button>
-    </header>
+    </div>
+  </header>
 
-    <section class="cta">
-      <div class="ctaLeft">
-        <div class="ctaTitle">Join dulu biar gak ketinggalan ⚡</div>
-        <div class="ctaBtns">
-          <a class="pillBtn" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">💬 Grup WA</a>
-          <a class="pillBtn" href="https://whatsapp.com/channel/0029VbBKScNAInPfll7NHM0O" target="_blank" rel="noopener">📢 Channel WA</a>
-          <a class="pillBtn" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">🚀 Telegram</a>
-          <a class="pillBtn" href="https://youtube.com/@PinshopCik" target="_blank" rel="noopener">▶️ YouTube</a>
-        </div>
+  <main class="wrap">
+    <section class="hero reveal">
+      <div class="hero-badge">Repository</div>
+      <h1 class="hero-title">IPIN SCRIPT</h1>
+      <p class="hero-subtitle">
+        Koleksi file bot dan tools. Pilih dari daftar, lihat detail, lalu unduh.
+      </p>
+
+      <div class="hero-actions">
+        <a class="join" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">Grup WhatsApp</a>
+        <a class="join" href="https://whatsapp.com/channel/0029VbBKScNAInPfll7NHM0O" target="_blank" rel="noopener">Channel WhatsApp</a>
+        <a class="join" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
+        <a class="join" href="https://youtube.com/@PinshopCik" target="_blank" rel="noopener">YouTube</a>
       </div>
 
-      <div class="ctaRight">
+      <div class="hero-stats">
         <div class="stat">
-          <div class="statNum" id="totalDownloads">0</div>
-          <div class="statLabel">total download (device)</div>
+          <div class="stat-num" id="totalDl">0</div>
+          <div class="stat-label">Total download (device)</div>
         </div>
-        <div class="statHint">*Hitungan ini versi simpel (per HP/per browser). Nanti bisa dibikin global.</div>
+        <div class="stat">
+          <div class="stat-num" id="totalFiles">0</div>
+          <div class="stat-label">Total file</div>
+        </div>
       </div>
     </section>
 
-    <div class="bar">
-      <input id="q" class="search" placeholder="Cari script... (contoh: launcher, panel, bot, chat)" />
-      <button class="miniBtn" id="openInfo" type="button">ℹ️ Info</button>
-    </div>
+    <section class="panel reveal">
+      <div class="panel-row">
+        <input id="q" class="search" placeholder="Cari file..." />
+        <button class="btn ghost" id="infoBtn" type="button">Info</button>
+      </div>
+      <div id="list" class="grid"></div>
+      <div id="empty" class="empty" style="display:none;">Tidak ada hasil.</div>
+      <div id="err" class="empty" style="display:none;">data.js tidak terbaca. Pastikan file ada di root project.</div>
+    </section>
 
-    <main id="list" class="grid"></main>
-    <div id="empty" class="empty" style="display:none;">Gak ketemu yang cocok 😛</div>
-
-    <footer class="foot">
-      <span>© IPIN SCRIPT</span>
-      <span class="dotSep">•</span>
-      <span>Made with 🤍</span>
-    </footer>
-  </div>
+    <footer class="footer">© IPIN FILE HUB</footer>
+  </main>
 
   <!-- Modal -->
   <div class="overlay" id="overlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true">
-      <div class="modalTop">
-        <h3 id="mTitle">Info</h3>
-        <button class="xBtn" id="mClose" type="button">✕</button>
+      <div class="modal-top">
+        <div class="modal-title" id="mTitle">Detail</div>
+        <button class="x" id="mClose" type="button" aria-label="Close">×</button>
       </div>
-      <p id="mText">...</p>
-
-      <div class="modalActions">
-        <a class="btnGhost" id="mLink" target="_blank" rel="noopener" style="display:none;">Buka Link</a>
-        <button class="btnMain" id="mOk" type="button">Oke</button>
+      <div class="modal-body">
+        <div class="kv"><span>Nama</span><b id="mName">-</b></div>
+        <div class="kv"><span>Update</span><b id="mUpdated">-</b></div>
+        <div class="kv"><span>Ukuran</span><b id="mSize">-</b></div>
+        <div class="kv"><span>Tag</span><b id="mTags">-</b></div>
+        <p class="modal-desc" id="mDesc">-</p>
+      </div>
+      <div class="modal-actions">
+        <a class="btn ghost" id="mTelegram" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
+        <a class="btn primary" id="mDownload" target="_blank" rel="noopener">Download</a>
       </div>
     </div>
   </div>
 
   <script src="data.js"></script>
   <script>
-    // ===== Theme =====
+    // Theme
     const root = document.documentElement;
     const themeBtn = document.getElementById("themeBtn");
-    const themeIcon = document.getElementById("themeIcon");
-
-    const saved = localStorage.getItem("ipin_theme") || "dark"; // default dark biar premium
+    const themeLabel = document.getElementById("themeLabel");
+    const saved = localStorage.getItem("ipin_theme") || "dark";
     root.setAttribute("data-theme", saved);
-    themeIcon.textContent = saved === "dark" ? "🌙" : "🌞";
-
+    themeLabel.textContent = saved === "dark" ? "Dark" : "Light";
     themeBtn.addEventListener("click", () => {
-      const current = root.getAttribute("data-theme") || "light";
-      const next = current === "dark" ? "light" : "dark";
+      const cur = root.getAttribute("data-theme") || "light";
+      const next = cur === "dark" ? "light" : "dark";
       root.setAttribute("data-theme", next);
       localStorage.setItem("ipin_theme", next);
-      themeIcon.textContent = next === "dark" ? "🌙" : "🌞";
+      themeLabel.textContent = next === "dark" ? "Dark" : "Light";
     });
 
-    // ===== Modal helper =====
-    const overlay = document.getElementById("overlay");
-    const mTitle = document.getElementById("mTitle");
-    const mText = document.getElementById("mText");
-    const mClose = document.getElementById("mClose");
-    const mOk = document.getElementById("mOk");
-    const mLink = document.getElementById("mLink");
-
-    function openModal({ title, text, url }) {
-      mTitle.textContent = title;
-      mText.textContent = text;
-
-      if (url) {
-        mLink.style.display = "inline-flex";
-        mLink.href = url;
-      } else {
-        mLink.style.display = "none";
-        mLink.href = "#";
-      }
-
-      overlay.classList.add("show");
-      overlay.setAttribute("aria-hidden", "false");
-    }
-    function closeModal() {
-      overlay.classList.remove("show");
-      overlay.setAttribute("aria-hidden", "true");
-    }
-    overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
-    mClose.addEventListener("click", closeModal);
-    mOk.addEventListener("click", closeModal);
-
-    // tombol info
-    document.getElementById("openInfo").addEventListener("click", () => {
-      openModal({
-        title: "IPIN SCRIPT",
-        text: "Download script gratis di sini. Mau premium / request? join Telegram IPINSHOP. Jangan lupa join grup biar dapet update & bantuan.",
-        url: "https://t.me/IPINSHOP"
-      });
-    });
-
-    // popup berurutan (sekali per kunjungan)
-    if (!sessionStorage.getItem("ipin_pop")) {
-      sessionStorage.setItem("ipin_pop", "1");
-      setTimeout(() => openModal({
-        title: "SC Premium?",
-        text: "Ingin beli sc MD,Bug,Dll yang bagus? Gas Pv Telegram IPINN 👇",
-        url: "https://t.me/IPINSHOP"
-      }), 800);
-
-      setTimeout(() => openModal({
-        title: "Komunitas Bot",
-        text: "Gabung Komunitas WhatsApp Bot & Chat Bot! Diskusi + update bot gratis 🔥",
-        url: "https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc"
-      }), 2000);
-    }
-
-    // ===== Download count (simple: per device) =====
-    const totalEl = document.getElementById("totalDownloads");
-    function getTotal() {
-      return Number(localStorage.getItem("ipin_total_dl") || 0);
-    }
-    function incTotal() {
+    // Download count (simple: per device)
+    const totalDlEl = document.getElementById("totalDl");
+    const totalFilesEl = document.getElementById("totalFiles");
+    const getTotal = () => Number(localStorage.getItem("ipin_total_dl") || 0);
+    const incTotal = () => {
       const n = getTotal() + 1;
       localStorage.setItem("ipin_total_dl", String(n));
-      totalEl.textContent = n;
-    }
-    totalEl.textContent = getTotal();
+      totalDlEl.textContent = n;
+    };
+    totalDlEl.textContent = getTotal();
 
-    function getPer(link) {
-      return Number(localStorage.getItem("ipin_dl_" + link) || 0);
-    }
-    function incPer(link) {
-      const n = getPer(link) + 1;
-      localStorage.setItem("ipin_dl_" + link, String(n));
+    const getPer = (id) => Number(localStorage.getItem("ipin_dl_" + id) || 0);
+    const incPer = (id) => {
+      const n = getPer(id) + 1;
+      localStorage.setItem("ipin_dl_" + id, String(n));
       return n;
-    }
+    };
 
-    // ===== Render scripts =====
+    // Modal
+    const overlay = document.getElementById("overlay");
+    const mClose = document.getElementById("mClose");
+    const mTitle = document.getElementById("mTitle");
+    const mName = document.getElementById("mName");
+    const mUpdated = document.getElementById("mUpdated");
+    const mSize = document.getElementById("mSize");
+    const mTags = document.getElementById("mTags");
+    const mDesc = document.getElementById("mDesc");
+    const mDownload = document.getElementById("mDownload");
+
+    function openModal(item){
+      mTitle.textContent = "Detail";
+      mName.textContent = item.name || "-";
+      mUpdated.textContent = item.updated || "-";
+      mSize.textContent = item.size || "-";
+      mTags.textContent = (item.tags || []).join(", ") || "-";
+      mDesc.textContent = item.desc || "-";
+      mDownload.href = item.link || "#";
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden","false");
+    }
+    function closeModal(){
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden","true");
+    }
+    overlay.addEventListener("click",(e)=>{ if(e.target===overlay) closeModal(); });
+    mClose.addEventListener("click", closeModal);
+
+    // Render
     const listEl = document.getElementById("list");
     const emptyEl = document.getElementById("empty");
+    const errEl = document.getElementById("err");
     const qEl = document.getElementById("q");
 
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+    function esc(s){
+      return String(s||"")
+        .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;").replaceAll("'","&#039;");
     }
 
-    function render(filter = "") {
-      listEl.innerHTML = "";
+    function data(){
+      if (Array.isArray(window.scripts)) return window.scripts;
+      return null;
+    }
+
+    function render(filter=""){
+      const d = data();
+      if (!d){
+        errEl.style.display = "block";
+        emptyEl.style.display = "none";
+        listEl.innerHTML = "";
+        totalFilesEl.textContent = "0";
+        return;
+      }
+
+      errEl.style.display = "none";
+      totalFilesEl.textContent = d.length;
+
       const f = filter.trim().toLowerCase();
-      const items = (window.scripts || []).filter(sc => {
-        const hay = (sc.name + " " + sc.desc).toLowerCase();
-        return !f || hay.includes(f);
-      });
-
+      const items = d.filter(x => (x.name + " " + x.desc + " " + (x.tags||[]).join(" ")).toLowerCase().includes(f));
       emptyEl.style.display = items.length ? "none" : "block";
+      listEl.innerHTML = "";
 
-      items.forEach((sc, i) => {
+      items.forEach((it, i) => {
+        const per = getPer(it.id || it.name);
         const card = document.createElement("article");
-        card.className = "card";
+        card.className = "card reveal";
         card.style.animationDelay = (i * 0.05) + "s";
-
-        const per = getPer(sc.link);
-
         card.innerHTML = `
-          <div class="cardTop">
-            <h2>${escapeHtml(sc.name)}</h2>
-            <span class="badge">FREE</span>
+          <div class="card-top">
+            <div class="file-icon" aria-hidden="true"></div>
+            <div class="card-title">${esc(it.name)}</div>
+            <div class="badge">Free</div>
           </div>
-          <p>${escapeHtml(sc.desc)}</p>
-
-          <div class="cardRow">
-            <button class="btnMain" type="button">⬇ Download</button>
-            <div class="meta">Didownload: <b>${per}</b></div>
+          <div class="card-desc">${esc(it.desc)}</div>
+          <div class="card-bottom">
+            <button class="btn primary">Download</button>
+            <button class="btn ghost">Detail</button>
+            <div class="dl">Downloaded: <b>${per}</b></div>
           </div>
         `;
 
-        card.querySelector("button").addEventListener("click", () => {
-          const n = incPer(sc.link);
-          card.querySelector(".meta b").textContent = n;
+        const idKey = it.id || it.name;
+        card.querySelector(".btn.primary").addEventListener("click", () => {
+          const n = incPer(idKey);
+          card.querySelector(".dl b").textContent = n;
           incTotal();
-          window.location.href = sc.link;
+          window.location.href = it.link;
         });
 
+        card.querySelector(".btn.ghost").addEventListener("click", () => openModal(it));
         listEl.appendChild(card);
       });
+
+      // animate reveal (simple)
+      document.querySelectorAll(".reveal").forEach(el => el.classList.add("in"));
     }
 
     qEl.addEventListener("input", () => render(qEl.value));
+    document.getElementById("infoBtn").addEventListener("click", () => {
+      openModal({
+        name: "Informasi",
+        updated: "-",
+        size: "-",
+        tags: ["WhatsApp", "Telegram", "YouTube"],
+        desc: "Gunakan pencarian untuk menemukan file. Tombol Detail untuk info singkat, Download untuk membuka link.",
+        link: "https://t.me/IPINSHOP"
+      });
+    });
+
     render();
   </script>
 </body>

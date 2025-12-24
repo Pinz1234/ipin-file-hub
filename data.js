@@ -1,4 +1,4 @@
-const scripts = [
+window.scripts = [
   {
     name: "SC Launcher MD",
     desc: "Bot WhatsApp gratis, ringan, dan keren! Sc ini memiliki fitur sekitar 300+.",
