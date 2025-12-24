@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>IPIN SCRIPT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- LINK KE CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header class="top">
+      <div class="brand">
+        <h1>IPIN SCRIPT</h1>
+        <p>Kumpulan script gratis by IPIN</p>
+      </div>
+
+      <div class="toggle" id="themeBtn">
+        <span id="themeIcon">🌞</span>
+        <div class="pill"><div class="dot"></div></div>
+      </div>
+    </header>
+
+    <input id="q" class="search" placeholder="Cari script..." />
+
+    <main id="list" class="grid"></main>
+    <p id="empty" class="empty">Gak ketemu 😛</p>
+
+  </div>
+
+  <!-- DATA SCRIPT -->
+  <script src="data.js"></script>
+
+  <!-- LOGIC -->
+  <script>
+    /* DARK / LIGHT MODE */
+    const root = document.documentElement;
+    const btn = document.getElementById("themeBtn");
+    const icon = document.getElementById("themeIcon");
+
+    const saved = localStorage.getItem("theme");
+    if (saved) root.setAttribute("data-theme", saved);
+    icon.textContent = root.getAttribute("data-theme")==="dark"?"🌙":"🌞";
+
+    btn.onclick = () => {
+      const dark = root.getAttribute("data-theme")==="dark";
+      root.setAttribute("data-theme", dark?"light":"dark");
+      localStorage.setItem("theme", dark?"light":"dark");
+      icon.textContent = dark?"🌞":"🌙";
+    };
+
+    /* RENDER SCRIPT */
+    const list = document.getElementById("list");
+    const empty = document.getElementById("empty");
+    const q = document.getElementById("q");
+
+    function render(filter=""){
+      list.innerHTML = "";
+      const f = filter.toLowerCase();
+
+      const filtered = scripts.filter(s =>
+        (s.name + s.desc).toLowerCase().includes(f)
+      );
+
+      empty.style.display = filtered.length ? "none" : "block";
+
+      filtered.forEach((s,i)=>{
+        const el = document.createElement("div");
+        el.className = "card";
+        el.style.animationDelay = i*0.05+"s";
+        el.innerHTML = `
+          <h3>${s.name}</h3>
+          <p>${s.desc}</p>
+          <button onclick="location.href='${s.link}'">
+            Download
+          </button>
+        `;
+        list.appendChild(el);
+      });
+    }
+
+    q.oninput = () => render(q.value);
+    render();
+  </script>
+</body>
+</html>
