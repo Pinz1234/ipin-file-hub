@@ -3,283 +3,213 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <title>IPIN FILE HUB</title>
-  <meta name="description" content="IPIN FILE HUB – Koleksi script gratis.">
-  <meta name="theme-color" content="#0f1220">
-
+  <meta name="theme-color" content="#0f1326">
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.svg">
 </head>
 
 <body>
-  <!-- BACKGROUND -->
-  <div class="bg" aria-hidden="true">
-    <span class="blob b1"></span>
-    <span class="blob b2"></span>
-    <span class="blob b3"></span>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-mini">IPIN FILE HUB</div>
+    <button class="theme-toggle click" id="themeBtn" type="button" aria-label="Toggle theme">
+      <span class="theme-icon" id="themeIcon" aria-hidden="true">🌙</span>
+    </button>
   </div>
+</header>
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand-mini">IPIN FILE HUB</div>
+<main class="wrap">
+  <section class="hero reveal">
+    <h1 class="hero-title">IPIN SCRIPT</h1>
+    <p class="hero-subtitle">Kumpulan script gratis. Klik detail sebelum download.</p>
 
-      <button class="theme-toggle click" id="themeBtn" type="button" aria-label="Toggle theme">
-        <span class="theme-label" id="themeText">Dark</span>
-        <span class="switch" aria-hidden="true"><span class="knob"></span></span>
-      </button>
+    <div class="hero-actions">
+      <a class="join primary click" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">Grup WhatsApp</a>
+      <a class="join click" href="https://whatsapp.com/channel/0029VbBKScNAInPfll7NHM0O" target="_blank" rel="noopener">Channel WhatsApp</a>
+      <a class="join click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
+      <a class="join click" href="https://youtube.com/@PinshopCik" target="_blank" rel="noopener">YouTube</a>
     </div>
-  </header>
+  </section>
 
-  <!-- CONTENT -->
-  <main class="wrap">
-    <section class="hero reveal">
-      <h1 class="hero-title">IPIN SCRIPT</h1>
-      <p class="hero-subtitle">
-        Kumpulan script gratis. Klik detail sebelum download.
-      </p>
+  <section class="panel reveal">
+    <input id="search" class="search" placeholder="Cari script..." autocomplete="off">
+    <div id="list" class="grid"></div>
+    <div id="empty" class="empty" style="display:none;">Tidak ada hasil.</div>
+  </section>
 
-      <div class="hero-actions">
-        <a class="join click" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">Grup WhatsApp</a>
-        <a class="join click" href="https://whatsapp.com/channel/0029VbBKScNAInPfll7NHM0O" target="_blank" rel="noopener">Channel WhatsApp</a>
-        <a class="join click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
-        <a class="join click" href="https://youtube.com/@PinshopCik" target="_blank" rel="noopener">YouTube</a>
-      </div>
-    </section>
+  <footer class="footer">© IPIN FILE HUB</footer>
+</main>
 
-    <section class="panel reveal">
-      <input id="search" class="search" placeholder="Cari script..." autocomplete="off">
-      <div id="list" class="grid"></div>
-      <div id="empty" class="empty" style="display:none;">Tidak ada hasil.</div>
-      <div id="err" class="empty" style="display:none;">data.js tidak terbaca (cek file di root).</div>
-    </section>
+<!-- MODAL -->
+<div class="overlay" id="modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h3 id="mName" style="margin:0 0 8px;">-</h3>
+    <p id="mDesc" style="margin:0;color:var(--muted);line-height:1.6">-</p>
 
-    <footer class="footer">© IPIN FILE HUB</footer>
-  </main>
+    <div class="hero-actions" style="margin-top:16px">
+      <a id="mDownload" class="join primary click" target="_blank" rel="noopener">Download</a>
+      <a class="join click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
+    </div>
 
-  <!-- MODAL DETAIL -->
-  <div class="overlay" id="modal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-      <h3 id="mName" style="margin:0 0 8px;">-</h3>
-      <p id="mDesc" style="margin:0; color:var(--muted); line-height:1.6;">-</p>
-
-      <div class="hero-actions" style="margin-top:16px;">
-        <a id="mDownload" class="join click" target="_blank" rel="noopener">Download</a>
-        <a class="join click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
-      </div>
-
-      <div style="margin-top:16px; text-align:center;">
-        <button class="join click" id="closeModal" type="button">Tutup</button>
-      </div>
+    <div style="margin-top:16px;text-align:center">
+      <button class="join click" id="closeModal" type="button">Tutup</button>
     </div>
   </div>
+</div>
 
-  <!-- POPUP -->
-  <div class="overlay" id="popup" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-      <h3 style="margin:0 0 8px;">Gabung Komunitas</h3>
-      <p style="margin:0; color:var(--muted); line-height:1.6;">
-        Update script terbaru ada di grup dan Telegram.
-      </p>
+<!-- POPUP -->
+<div class="overlay" id="popup" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h3 style="margin:0 0 8px;">Gabung Komunitas</h3>
+    <p style="margin:0;color:var(--muted);line-height:1.6">Update script terbaru ada di grup dan Telegram.</p>
 
-      <div class="hero-actions" style="margin-top:16px;">
-        <a class="join click" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">Grup WhatsApp</a>
-        <a class="join click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
-      </div>
+    <div class="hero-actions" style="margin-top:16px">
+      <a class="join primary click" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">Grup WhatsApp</a>
+      <a class="join click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
+    </div>
 
-      <div style="margin-top:16px; text-align:center;">
-        <button class="join click" id="closePopup" type="button">Tutup</button>
-      </div>
+    <div style="margin-top:16px;text-align:center">
+      <button class="join click" id="closePopup" type="button">Tutup</button>
     </div>
   </div>
+</div>
 
-  <script src="data.js"></script>
-  <script>
-    /* ===============================
-       CLICK SOUND (mp3 optional)
-       =============================== */
-    const sfx = new Audio("click.mp3");
-    sfx.volume = 0.06;
+<script src="data.js"></script>
+<script>
+/* click sound */
+const clickSound = new Audio("click.mp3");
+clickSound.volume = 0.06;
+document.addEventListener("click", e => {
+  if (e.target.closest(".click")){
+    clickSound.currentTime = 0;
+    clickSound.play().catch(()=>{});
+  }
+});
 
-    function playClick(){
-      try{
-        sfx.currentTime = 0;
-        sfx.play().catch(()=>{});
-      }catch(_){}
-    }
+/* button hover sparkle position (for ripple shine) */
+document.addEventListener("pointermove", (e) => {
+  const btn = e.target.closest(".join");
+  if(!btn) return;
+  const r = btn.getBoundingClientRect();
+  const x = ((e.clientX - r.left) / r.width) * 100;
+  const y = ((e.clientY - r.top) / r.height) * 100;
+  btn.style.setProperty("--x", x + "%");
+  btn.style.setProperty("--y", y + "%");
+});
 
-    document.addEventListener("click", (e) => {
-      if (e.target.closest(".click")) playClick();
-    });
+/* theme */
+const root = document.documentElement;
+const themeBtn = document.getElementById("themeBtn");
+const themeIcon = document.getElementById("themeIcon");
 
-    /* ===============================
-       THEME
-       =============================== */
-    const root = document.documentElement;
-    const themeBtn = document.getElementById("themeBtn");
-    const themeText = document.getElementById("themeText");
+const savedTheme = localStorage.getItem("theme") || "dark";
+root.setAttribute("data-theme", savedTheme);
+themeIcon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
 
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    root.setAttribute("data-theme", savedTheme);
-    themeText.textContent = savedTheme === "dark" ? "Dark" : "Light";
-    document.querySelector('meta[name="theme-color"]').setAttribute(
-      "content",
-      savedTheme === "dark" ? "#0f1220" : "#f6f7ff"
-    );
-
-    themeBtn.addEventListener("click", () => {
-  // Matikan animasi sebentar biar HP gak ngelag saat theme switch
+themeBtn.addEventListener("click", () => {
   document.body.classList.add("no-transitions");
-
   const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
   root.setAttribute("data-theme", next);
   localStorage.setItem("theme", next);
-  themeText.textContent = next === "dark" ? "Dark" : "Light";
-
+  themeIcon.textContent = next === "dark" ? "🌙" : "☀️";
   document.querySelector('meta[name="theme-color"]').setAttribute(
     "content",
     next === "dark" ? "#0f1326" : "#fff3f8"
   );
-
-  // Balikin transisi setelah switch kelar
   setTimeout(() => document.body.classList.remove("no-transitions"), 180);
 });
 
-    /* ===============================
-       DATA + RENDER
-       =============================== */
-    const list = document.getElementById("list");
-    const empty = document.getElementById("empty");
-    const err = document.getElementById("err");
-    const search = document.getElementById("search");
+/* modal */
+const modal = document.getElementById("modal");
+const mName = document.getElementById("mName");
+const mDesc = document.getElementById("mDesc");
+const mDownload = document.getElementById("mDownload");
 
-    const modal = document.getElementById("modal");
-    const mName = document.getElementById("mName");
-    const mDesc = document.getElementById("mDesc");
-    const mDownload = document.getElementById("mDownload");
-    const closeModal = document.getElementById("closeModal");
+function openModal(s){
+  mName.textContent = s.name || "-";
+  mDesc.textContent = s.desc || "-";
+  mDownload.href = s.link || "#";
+  modal.classList.add("show");
+}
+document.getElementById("closeModal").onclick = () => modal.classList.remove("show");
+modal.addEventListener("click", (e)=>{ if(e.target === modal) modal.classList.remove("show"); });
 
-    function openModal(item){
-      mName.textContent = item.name || "-";
-      mDesc.textContent = item.desc || "-";
-      mDownload.href = item.link || "#";
-      modal.classList.add("show");
-      document.body.style.overflow = "hidden";
-    }
-    function hideModal(){
-      modal.classList.remove("show");
-      document.body.style.overflow = "";
-    }
-    closeModal.addEventListener("click", hideModal);
-    modal.addEventListener("click", (e) => { if (e.target === modal) hideModal(); });
+/* popup */
+const popup = document.getElementById("popup");
+if(!sessionStorage.getItem("ipin_popup_v7")){
+  sessionStorage.setItem("ipin_popup_v7","1");
+  setTimeout(()=>popup.classList.add("show"), 900);
+}
+document.getElementById("closePopup").onclick = () => popup.classList.remove("show");
+popup.addEventListener("click", (e)=>{ if(e.target === popup) popup.classList.remove("show"); });
 
-    function getScripts(){
-      if (Array.isArray(window.scripts)) return window.scripts;
-      return null;
-    }
+/* render */
+const list = document.getElementById("list");
+const empty = document.getElementById("empty");
+const search = document.getElementById("search");
 
-    function render(filter=""){
-      const d = getScripts();
-      list.innerHTML = "";
+function escapeHtml(s){
+  return String(s||"")
+    .replaceAll("&","&amp;").replaceAll("<","&lt;")
+    .replaceAll(">","&gt;").replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
 
-      if(!d){
-        err.style.display = "block";
-        empty.style.display = "none";
-        return;
+function render(q=""){
+  list.innerHTML = "";
+  const f = q.trim().toLowerCase();
+
+  const items = (window.scripts || []).filter(s=>{
+    const hay = (s.name + " " + (s.desc||"")).toLowerCase();
+    return !f || hay.includes(f);
+  });
+
+  empty.style.display = items.length ? "none" : "block";
+
+  items.forEach(s=>{
+    const card = document.createElement("div");
+    card.className = "card reveal";
+    card.innerHTML = `
+      <h3>${escapeHtml(s.name)}</h3>
+      <p>${escapeHtml(s.desc || "")}</p>
+      <div class="card-row">
+        <button class="join click" type="button">Detail</button>
+        <span class="badge">Free</span>
+      </div>
+    `;
+    card.querySelector("button").onclick = () => openModal(s);
+    list.appendChild(card);
+  });
+
+  observeReveal();
+}
+
+search.addEventListener("input", ()=> render(search.value));
+
+/* real reveal (IntersectionObserver) */
+let io;
+function observeReveal(){
+  if (io) io.disconnect();
+  const els = document.querySelectorAll(".reveal");
+  if(!("IntersectionObserver" in window)){
+    els.forEach(el=>el.classList.add("in"));
+    return;
+  }
+  io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        en.target.classList.add("in");
+        io.unobserve(en.target);
       }
+    });
+  }, { rootMargin: "80px" });
+  els.forEach(el=>io.observe(el));
+}
 
-      err.style.display = "none";
-      const f = filter.trim().toLowerCase();
-
-      const items = d.filter(s => {
-        const hay = (s.name + " " + (s.desc||"")).toLowerCase();
-        return !f || hay.includes(f);
-      });
-
-      empty.style.display = items.length ? "none" : "block";
-
-      items.forEach((s) => {
-        const card = document.createElement("div");
-        card.className = "card reveal";
-        card.innerHTML = `
-          <h3>${escapeHtml(s.name)}</h3>
-          <p>${escapeHtml(s.desc || "")}</p>
-          <div class="card-row">
-            <button class="join click" type="button">Detail</button>
-            <span class="badge">Free</span>
-          </div>
-        `;
-        card.querySelector("button").addEventListener("click", () => openModal(s));
-        list.appendChild(card);
-      });
-
-      refreshReveal();
-    }
-
-    function escapeHtml(str){
-      return String(str || "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    search.addEventListener("input", () => render(search.value));
-
-    /* ===============================
-       POPUP (ONCE PER SESSION)
-       =============================== */
-    const popup = document.getElementById("popup");
-    const closePopup = document.getElementById("closePopup");
-    const POP_KEY = "ipin_popup_v5";
-
-    function showPopup(){
-      popup.classList.add("show");
-      document.body.style.overflow = "hidden";
-    }
-    function hidePopup(){
-      popup.classList.remove("show");
-      document.body.style.overflow = "";
-    }
-    closePopup.addEventListener("click", hidePopup);
-    popup.addEventListener("click", (e) => { if (e.target === popup) hidePopup(); });
-
-    if (!sessionStorage.getItem(POP_KEY)){
-      sessionStorage.setItem(POP_KEY, "1");
-      setTimeout(showPopup, 900);
-    }
-
-    /* ===============================
-       REVEAL (LIGHTER)
-       =============================== */
-    let io;
-    function refreshReveal(){
-      if (io) io.disconnect();
-      const els = document.querySelectorAll(".reveal");
-
-      // fallback for older browsers
-      if (!("IntersectionObserver" in window)){
-        els.forEach(el => el.classList.add("in"));
-        return;
-      }
-
-      io = new IntersectionObserver((entries) => {
-        entries.forEach(en => {
-          if (en.isIntersecting){
-            en.target.classList.add("in");
-            io.unobserve(en.target);
-          }
-        });
-      }, { rootMargin: "80px" });
-
-      els.forEach(el => io.observe(el));
-    }
-
-    /* INIT */
-    render("");
-    refreshReveal();
-  </script>
+/* init */
+render("");
+observeReveal();
+</script>
 </body>
 </html>
