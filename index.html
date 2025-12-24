@@ -3,102 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IPIN SCRIPT</title>
+  <title>IPIN FILE HUB</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <div class="bg-blobs" aria-hidden="true">
-    <span class="blob b1"></span>
-    <span class="blob b2"></span>
-    <span class="blob b3"></span>
+  <div class="bg" aria-hidden="true">
+    <span class="g g1"></span>
+    <span class="g g2"></span>
+    <span class="g g3"></span>
   </div>
 
-  <div class="wrap">
-    <header class="top">
-      <div class="brand">
-        <div class="kicker">✨ IPIN FILE HUB</div>
-        <h1>IPIN SCRIPT</h1>
-        <p>Kumpulan script gratis by IPIN — klik download, gas. Join komunitas biar dapet update 🔥</p>
-      </div>
+  <header class="header">
+    <div class="headerInner">
+      <div class="logo">IPIN FILE HUB</div>
 
-      <button class="theme" id="themeBtn" type="button" title="Mode gelap/terang">
-        <span class="themeIcon" id="themeIcon">🌞</span>
-        <span class="themeTrack"><span class="themeDot"></span></span>
+      <button class="themeBtn" id="themeBtn" type="button" aria-label="Toggle theme">
+        <span class="themeIcon" id="themeIcon">Light</span>
+        <span class="switch"><span class="knob"></span></span>
       </button>
-    </header>
+    </div>
+  </header>
 
-    <section class="cta">
-      <div class="ctaLeft">
-        <div class="ctaTitle">Join dulu biar gak ketinggalan ⚡</div>
-        <div class="ctaBtns">
-          <a class="pillBtn" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">💬 Grup WA</a>
-          <a class="pillBtn" href="https://whatsapp.com/channel/0029VbBKScNAInPfll7NHM0O" target="_blank" rel="noopener">📢 Channel WA</a>
-          <a class="pillBtn" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">🚀 Telegram</a>
-          <a class="pillBtn" href="https://youtube.com/@PinshopCik" target="_blank" rel="noopener">▶️ YouTube</a>
+  <main class="container">
+    <section class="hero">
+      <h1 class="title">IPIN SCRIPT</h1>
+      <p class="subtitle">
+        Koleksi file untuk bot dan tools. Unduh dari daftar di bawah.
+      </p>
+
+      <div class="joinWrap">
+        <a class="joinBtn" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">
+          Grup WhatsApp
+        </a>
+        <a class="joinBtn" href="https://whatsapp.com/channel/0029VbBKScNAInPfll7NHM0O" target="_blank" rel="noopener">
+          Channel WhatsApp
+        </a>
+        <a class="joinBtn" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">
+          Telegram
+        </a>
+        <a class="joinBtn" href="https://youtube.com/@PinshopCik" target="_blank" rel="noopener">
+          YouTube
+        </a>
+      </div>
+
+      <div class="stats">
+        <div class="statCard">
+          <div class="statNum" id="totalDownloads">0</div>
+          <div class="statLabel">Total download (per device)</div>
+        </div>
+        <div class="statNote">
+          Angka ini versi sederhana (per browser). Jika lo mau versi global (semua orang gabung), gw bikinin next.
         </div>
       </div>
 
-      <div class="ctaRight">
-        <div class="stat">
-          <div class="statNum" id="totalDownloads">0</div>
-          <div class="statLabel">total download (device)</div>
-        </div>
-        <div class="statHint">*Hitungan ini versi simpel (per HP/per browser). Nanti bisa dibikin global.</div>
+      <div class="toolbar">
+        <input id="q" class="search" placeholder="Cari file..." />
+        <button class="infoBtn" id="openInfo" type="button">Info</button>
       </div>
     </section>
 
-    <div class="bar">
-      <input id="q" class="search" placeholder="Cari script... (contoh: launcher, panel, bot, chat)" />
-      <button class="miniBtn" id="openInfo" type="button">ℹ️ Info</button>
-    </div>
+    <section>
+      <div id="list" class="grid"></div>
+      <div id="empty" class="empty" style="display:none;">Tidak ada hasil.</div>
+    </section>
+  </main>
 
-    <main id="list" class="grid"></main>
-    <div id="empty" class="empty" style="display:none;">Gak ketemu yang cocok 😛</div>
-
-    <footer class="foot">
-      <span>© IPIN SCRIPT</span>
-      <span class="dotSep">•</span>
-      <span>Made with 🤍</span>
-    </footer>
-  </div>
+  <footer class="footer">
+    <span>© IPIN FILE HUB</span>
+  </footer>
 
   <!-- Modal -->
   <div class="overlay" id="overlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true">
       <div class="modalTop">
-        <h3 id="mTitle">Info</h3>
-        <button class="xBtn" id="mClose" type="button">✕</button>
+        <div class="modalTitle" id="mTitle">Info</div>
+        <button class="xBtn" id="mClose" type="button" aria-label="Close">×</button>
       </div>
-      <p id="mText">...</p>
-
+      <div class="modalText" id="mText"></div>
       <div class="modalActions">
-        <a class="btnGhost" id="mLink" target="_blank" rel="noopener" style="display:none;">Buka Link</a>
-        <button class="btnMain" id="mOk" type="button">Oke</button>
+        <a class="ghostBtn" id="mLink" target="_blank" rel="noopener" style="display:none;">Buka</a>
+        <button class="primaryBtn" id="mOk" type="button">Tutup</button>
       </div>
     </div>
   </div>
 
+  <!-- IMPORTANT: data.js harus ada di root -->
   <script src="data.js"></script>
+
   <script>
     // ===== Theme =====
     const root = document.documentElement;
     const themeBtn = document.getElementById("themeBtn");
     const themeIcon = document.getElementById("themeIcon");
 
-    const saved = localStorage.getItem("ipin_theme") || "dark"; // default dark biar premium
-    root.setAttribute("data-theme", saved);
-    themeIcon.textContent = saved === "dark" ? "🌙" : "🌞";
+    const savedTheme = localStorage.getItem("ipin_theme") || "dark";
+    root.setAttribute("data-theme", savedTheme);
+    themeIcon.textContent = savedTheme === "dark" ? "Dark" : "Light";
 
     themeBtn.addEventListener("click", () => {
-      const current = root.getAttribute("data-theme") || "light";
-      const next = current === "dark" ? "light" : "dark";
+      const cur = root.getAttribute("data-theme") || "light";
+      const next = cur === "dark" ? "light" : "dark";
       root.setAttribute("data-theme", next);
       localStorage.setItem("ipin_theme", next);
-      themeIcon.textContent = next === "dark" ? "🌙" : "🌞";
+      themeIcon.textContent = next === "dark" ? "Dark" : "Light";
     });
 
-    // ===== Modal helper =====
+    // ===== Modal =====
     const overlay = document.getElementById("overlay");
     const mTitle = document.getElementById("mTitle");
     const mText = document.getElementById("mText");
@@ -106,7 +116,7 @@
     const mOk = document.getElementById("mOk");
     const mLink = document.getElementById("mLink");
 
-    function openModal({ title, text, url }) {
+    function openModal({title, text, url}) {
       mTitle.textContent = title;
       mText.textContent = text;
 
@@ -129,70 +139,68 @@
     mClose.addEventListener("click", closeModal);
     mOk.addEventListener("click", closeModal);
 
-    // tombol info
     document.getElementById("openInfo").addEventListener("click", () => {
       openModal({
-        title: "IPIN SCRIPT",
-        text: "Download script gratis di sini. Mau premium / request? join Telegram IPINSHOP. Jangan lupa join grup biar dapet update & bantuan.",
-        url: "https://t.me/IPINSHOP"
+        title: "Cara pakai",
+        text: "Cari file lewat kolom pencarian, lalu tekan Download. Link akan terbuka.",
+        url: null
       });
     });
 
-    // popup berurutan (sekali per kunjungan)
-    if (!sessionStorage.getItem("ipin_pop")) {
-      sessionStorage.setItem("ipin_pop", "1");
+    // Popup sekali per session (rapi, nggak alay)
+    if (!sessionStorage.getItem("ipin_popup_once")) {
+      sessionStorage.setItem("ipin_popup_once", "1");
       setTimeout(() => openModal({
-        title: "SC Premium?",
-        text: "Ingin beli sc MD,Bug,Dll yang bagus? Gas Pv Telegram IPINN 👇",
+        title: "Update",
+        text: "Gabung Telegram untuk info versi terbaru dan rilis file baru.",
         url: "https://t.me/IPINSHOP"
-      }), 800);
-
-      setTimeout(() => openModal({
-        title: "Komunitas Bot",
-        text: "Gabung Komunitas WhatsApp Bot & Chat Bot! Diskusi + update bot gratis 🔥",
-        url: "https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc"
-      }), 2000);
+      }), 900);
     }
 
-    // ===== Download count (simple: per device) =====
+    // ===== Download count (per device) =====
     const totalEl = document.getElementById("totalDownloads");
-    function getTotal() {
-      return Number(localStorage.getItem("ipin_total_dl") || 0);
-    }
-    function incTotal() {
+    function getTotal(){ return Number(localStorage.getItem("ipin_total_dl") || 0); }
+    function incTotal(){
       const n = getTotal() + 1;
       localStorage.setItem("ipin_total_dl", String(n));
       totalEl.textContent = n;
     }
     totalEl.textContent = getTotal();
 
-    function getPer(link) {
-      return Number(localStorage.getItem("ipin_dl_" + link) || 0);
-    }
-    function incPer(link) {
+    function getPer(link){ return Number(localStorage.getItem("ipin_dl_" + link) || 0); }
+    function incPer(link){
       const n = getPer(link) + 1;
       localStorage.setItem("ipin_dl_" + link, String(n));
       return n;
     }
 
-    // ===== Render scripts =====
+    // ===== Render list (anti “data.js kebaca tapi kosong”) =====
     const listEl = document.getElementById("list");
     const emptyEl = document.getElementById("empty");
     const qEl = document.getElementById("q");
 
-    function escapeHtml(str) {
+    function escapeHtml(str){
       return String(str)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
     }
 
-    function render(filter = "") {
+    function getData(){
+      // ini yang bikin “pasti kebaca” walau environment beda
+      if (typeof scripts !== "undefined" && Array.isArray(scripts)) return scripts;
+      if (Array.isArray(window.scripts)) return window.scripts;
+      return [];
+    }
+
+    function render(filter=""){
+      const data = getData();
       listEl.innerHTML = "";
+
       const f = filter.trim().toLowerCase();
-      const items = (window.scripts || []).filter(sc => {
+      const items = data.filter(sc => {
         const hay = (sc.name + " " + sc.desc).toLowerCase();
         return !f || hay.includes(f);
       });
@@ -200,28 +208,25 @@
       emptyEl.style.display = items.length ? "none" : "block";
 
       items.forEach((sc, i) => {
+        const per = getPer(sc.link);
         const card = document.createElement("article");
         card.className = "card";
-        card.style.animationDelay = (i * 0.05) + "s";
-
-        const per = getPer(sc.link);
-
+        card.style.animationDelay = (i * 0.06) + "s";
         card.innerHTML = `
           <div class="cardTop">
-            <h2>${escapeHtml(sc.name)}</h2>
-            <span class="badge">FREE</span>
+            <div class="cardTitle">${escapeHtml(sc.name)}</div>
+            <div class="pill">Free</div>
           </div>
-          <p>${escapeHtml(sc.desc)}</p>
-
-          <div class="cardRow">
-            <button class="btnMain" type="button">⬇ Download</button>
-            <div class="meta">Didownload: <b>${per}</b></div>
+          <div class="cardDesc">${escapeHtml(sc.desc)}</div>
+          <div class="cardBottom">
+            <button class="primaryBtn dlBtn" type="button">Download</button>
+            <div class="dlInfo">Downloaded: <b>${per}</b></div>
           </div>
         `;
 
-        card.querySelector("button").addEventListener("click", () => {
+        card.querySelector(".dlBtn").addEventListener("click", () => {
           const n = incPer(sc.link);
-          card.querySelector(".meta b").textContent = n;
+          card.querySelector(".dlInfo b").textContent = n;
           incTotal();
           window.location.href = sc.link;
         });
