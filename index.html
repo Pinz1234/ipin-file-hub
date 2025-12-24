@@ -1,179 +1,214 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" data-theme="dark">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>IPIN FILE HUB</title>
-  <meta name="description" content="IPIN FILE HUB – Koleksi file bot dan tools.">
+  <meta name="description" content="IPIN FILE HUB – Koleksi script gratis.">
   <meta name="theme-color" content="#0b0e14">
 
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 
 <body>
-  <div class="bg">
-    <span class="blob b1"></span>
-    <span class="blob b2"></span>
-    <span class="blob b3"></span>
+
+<!-- BACKGROUND -->
+<div class="bg">
+  <span class="blob b1"></span>
+  <span class="blob b2"></span>
+  <span class="blob b3"></span>
+</div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-mini">IPIN FILE HUB</div>
+
+    <button class="theme-toggle" id="themeBtn">
+      <span id="themeText">Dark</span>
+      <span class="switch"><span class="knob"></span></span>
+    </button>
   </div>
+</header>
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand-mini">IPIN FILE HUB</div>
+<!-- CONTENT -->
+<main class="wrap">
 
-      <button class="theme-toggle" id="themeBtn">
-        <span id="themeLabel">Dark</span>
-        <span class="switch"><span class="knob"></span></span>
-      </button>
+  <!-- HERO -->
+  <section class="hero reveal">
+    <h1 class="hero-title">IPIN SCRIPT</h1>
+    <p class="hero-subtitle">
+      Kumpulan script gratis. Klik detail sebelum download.
+    </p>
+
+    <div class="hero-actions">
+      <a class="join click" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank">Grup WA</a>
+      <a class="join click" href="https://whatsapp.com/channel/0029VbBKScNAInPfll7NHM0O" target="_blank">Channel WA</a>
+      <a class="join click" href="https://t.me/IPINSHOP" target="_blank">Telegram</a>
+      <a class="join click" href="https://youtube.com/@PinshopCik" target="_blank">YouTube</a>
     </div>
-  </header>
+  </section>
 
-  <main class="wrap">
-    <section class="hero reveal">
-      <div class="hero-badge">Repository</div>
-      <h1 class="hero-title">IPIN SCRIPT</h1>
-      <p class="hero-subtitle">
-        Koleksi file bot dan tools. Cari, lihat detail, lalu unduh.
-      </p>
+  <!-- PANEL -->
+  <section class="panel reveal">
+    <input id="search" class="search" placeholder="Cari script...">
+    <div id="list" class="grid"></div>
+    <div id="empty" class="empty">Tidak ada data.</div>
+  </section>
 
-      <div class="hero-actions">
-        <a class="join" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank">Grup WhatsApp</a>
-        <a class="join" href="https://whatsapp.com/channel/0029VbBKScNAInPfll7NHM0O" target="_blank">Channel WhatsApp</a>
-        <a class="join" href="https://t.me/IPINSHOP" target="_blank">Telegram</a>
-        <a class="join" href="https://youtube.com/@PinshopCik" target="_blank">YouTube</a>
-      </div>
+</main>
 
-      <div class="hero-stats">
-        <div class="stat">
-          <div class="stat-num" id="totalDl">0</div>
-          <div class="stat-label">Total download (device)</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num" id="totalFiles">0</div>
-          <div class="stat-label">Total file</div>
-        </div>
-      </div>
-    </section>
+<!-- MODAL DETAIL -->
+<div class="overlay" id="modal">
+  <div class="modal">
+    <h3 id="mName"></h3>
+    <p id="mDesc"></p>
 
-    <section class="panel reveal">
-      <input id="q" class="search" placeholder="Cari file..." />
-      <div id="list" class="grid"></div>
-      <div id="empty" class="empty">Tidak ada hasil.</div>
-    </section>
+    <div class="hero-actions">
+      <a id="mDownload" class="join click" target="_blank">Download</a>
+      <a class="join click" href="https://t.me/IPINSHOP" target="_blank">Telegram</a>
+    </div>
 
-    <footer class="footer">© IPIN FILE HUB</footer>
-  </main>
-
-  <!-- MODAL -->
-  <div class="overlay" id="overlay">
-    <div class="modal">
-      <div class="modal-top">
-        <b id="mTitle">Detail</b>
-        <button id="mClose">✕</button>
-      </div>
-
-      <p id="mDesc"></p>
-
-      <div class="modal-actions">
-        <a id="mTelegram" class="btn ghost" target="_blank">Telegram</a>
-        <a id="mDownload" class="btn primary" target="_blank">Download</a>
-      </div>
+    <div style="margin-top:16px;text-align:center">
+      <button class="join click" id="closeModal">Tutup</button>
     </div>
   </div>
+</div>
 
-  <script src="data.js"></script>
-  <script>
-    /* THEME */
-    const root = document.documentElement;
-    const btn = document.getElementById("themeBtn");
-    const lbl = document.getElementById("themeLabel");
-    const saved = localStorage.getItem("theme") || "dark";
-    root.setAttribute("data-theme", saved);
-    lbl.textContent = saved === "dark" ? "Dark" : "Light";
+<!-- POPUP -->
+<div class="overlay" id="popup">
+  <div class="modal">
+    <h3>Gabung Komunitas</h3>
+    <p>Dapatkan update script terbaru.</p>
 
-    btn.onclick = () => {
-      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      root.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
-      lbl.textContent = next === "dark" ? "Dark" : "Light";
-    };
+    <div class="hero-actions">
+      <a class="join click" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank">Grup WA</a>
+      <a class="join click" href="https://t.me/IPINSHOP" target="_blank">Telegram</a>
+    </div>
 
-    /* COUNTER */
-    const totalDl = document.getElementById("totalDl");
-    const totalFiles = document.getElementById("totalFiles");
-    totalDl.textContent = localStorage.getItem("total") || 0;
+    <div style="margin-top:16px;text-align:center">
+      <button class="join click" id="closePopup">Tutup</button>
+    </div>
+  </div>
+</div>
 
-    function incTotal() {
-      let n = Number(localStorage.getItem("total") || 0) + 1;
-      localStorage.setItem("total", n);
-      totalDl.textContent = n;
-    }
+<!-- DATA -->
+<script src="data.js"></script>
 
-    /* MODAL */
-    const overlay = document.getElementById("overlay");
-    const mClose = document.getElementById("mClose");
-    const mTitle = document.getElementById("mTitle");
-    const mDesc = document.getElementById("mDesc");
-    const mDownload = document.getElementById("mDownload");
-    const mTelegram = document.getElementById("mTelegram");
+<!-- SCRIPT -->
+<script>
+/* ===============================
+   CLICK SOUND
+=============================== */
+const clickSound = new Audio("click.mp3");
+clickSound.volume = 0.06;
 
-    mClose.onclick = () => overlay.classList.remove("show");
-    overlay.onclick = e => e.target === overlay && overlay.classList.remove("show");
+document.addEventListener("click", e => {
+  if (e.target.closest(".click")) {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(()=>{});
+  }
+});
 
-    /* RENDER */
-    const list = document.getElementById("list");
-    const empty = document.getElementById("empty");
-    const q = document.getElementById("q");
+/* ===============================
+   THEME TOGGLE
+=============================== */
+const root = document.documentElement;
+const themeBtn = document.getElementById("themeBtn");
+const themeText = document.getElementById("themeText");
 
-    function render(filter="") {
-      list.innerHTML = "";
-      const f = filter.toLowerCase();
-      const data = window.scripts || [];
-      totalFiles.textContent = data.length;
+const savedTheme = localStorage.getItem("theme") || "dark";
+root.setAttribute("data-theme", savedTheme);
+themeText.textContent = savedTheme === "dark" ? "Dark" : "Light";
 
-      const items = data.filter(x =>
-        (x.name + x.desc).toLowerCase().includes(f)
-      );
+themeBtn.onclick = () => {
+  const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  root.setAttribute("data-theme", next);
+  localStorage.setItem("theme", next);
+  themeText.textContent = next === "dark" ? "Dark" : "Light";
+};
 
-      empty.style.display = items.length ? "none" : "block";
+/* ===============================
+   RENDER DATA
+=============================== */
+const list = document.getElementById("list");
+const empty = document.getElementById("empty");
+const search = document.getElementById("search");
 
-      items.forEach(sc => {
-        const card = document.createElement("div");
-        card.className = "card reveal";
-        card.innerHTML = `
-          <h3>${sc.name}</h3>
-          <p>${sc.desc}</p>
-          <div class="card-bottom">
-            <button class="btn primary">Download</button>
-            <button class="btn ghost">Detail</button>
-          </div>
-        `;
+function render(filter="") {
+  list.innerHTML = "";
+  const f = filter.toLowerCase();
 
-        card.querySelector(".primary").onclick = () => {
-          incTotal();
-          window.open(sc.link, "_blank");
-        };
+  const items = window.scripts.filter(s =>
+    s.name.toLowerCase().includes(f)
+  );
 
-        card.querySelector(".ghost").onclick = () => {
-          mTitle.textContent = sc.name;
-          mDesc.textContent = sc.desc;
-          mDownload.href = sc.link;
-          mTelegram.href = "https://t.me/IPINSHOP";
-          overlay.classList.add("show");
-        };
+  empty.style.display = items.length ? "none" : "block";
 
-        list.appendChild(card);
-      });
-    }
+  items.forEach(s => {
+    const card = document.createElement("div");
+    card.className = "card reveal";
 
-    q.oninput = () => render(q.value);
-    render();
+    card.innerHTML = `
+      <h3>${s.name}</h3>
+      <p>${s.desc}</p>
+      <button class="join click">Detail</button>
+    `;
 
-    requestAnimationFrame(() =>
-      document.querySelectorAll(".reveal").forEach(e => e.classList.add("in"))
-    );
-  </script>
+    card.querySelector("button").onclick = () => openModal(s);
+    list.appendChild(card);
+  });
+
+  reveal();
+}
+
+search.oninput = () => render(search.value);
+
+/* ===============================
+   MODAL
+=============================== */
+const modal = document.getElementById("modal");
+const mName = document.getElementById("mName");
+const mDesc = document.getElementById("mDesc");
+const mDownload = document.getElementById("mDownload");
+
+function openModal(s) {
+  mName.textContent = s.name;
+  mDesc.textContent = s.desc;
+  mDownload.href = s.link;
+  modal.classList.add("show");
+}
+
+document.getElementById("closeModal").onclick = () =>
+  modal.classList.remove("show");
+
+/* ===============================
+   POPUP (ONCE)
+=============================== */
+const popup = document.getElementById("popup");
+
+if (!sessionStorage.getItem("popupShown")) {
+  sessionStorage.setItem("popupShown", "yes");
+  setTimeout(() => popup.classList.add("show"), 1200);
+}
+
+document.getElementById("closePopup").onclick = () =>
+  popup.classList.remove("show");
+
+/* ===============================
+   REVEAL
+=============================== */
+function reveal() {
+  document.querySelectorAll(".reveal").forEach(el => {
+    el.classList.add("in");
+  });
+}
+
+/* INIT */
+render();
+</script>
+
 </body>
 </html>
