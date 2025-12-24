@@ -129,15 +129,22 @@
     );
 
     themeBtn.addEventListener("click", () => {
-      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      root.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
-      themeText.textContent = next === "dark" ? "Dark" : "Light";
-      document.querySelector('meta[name="theme-color"]').setAttribute(
-        "content",
-        next === "dark" ? "#0f1220" : "#f6f7ff"
-      );
-    });
+  // Matikan animasi sebentar biar HP gak ngelag saat theme switch
+  document.body.classList.add("no-transitions");
+
+  const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  root.setAttribute("data-theme", next);
+  localStorage.setItem("theme", next);
+  themeText.textContent = next === "dark" ? "Dark" : "Light";
+
+  document.querySelector('meta[name="theme-color"]').setAttribute(
+    "content",
+    next === "dark" ? "#0f1326" : "#fff3f8"
+  );
+
+  // Balikin transisi setelah switch kelar
+  setTimeout(() => document.body.classList.remove("no-transitions"), 180);
+});
 
     /* ===============================
        DATA + RENDER
