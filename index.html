@@ -4,212 +4,293 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IPIN FILE HUB</title>
-  <meta name="theme-color" content="#0f1326">
+  <meta name="theme-color" content="#0b0f1f">
+
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/favicon.svg">
 </head>
 
 <body>
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="brand-mini">IPIN FILE HUB</div>
-    <button class="theme-toggle click" id="themeBtn" type="button" aria-label="Toggle theme">
-      <span class="theme-icon" id="themeIcon" aria-hidden="true">🌙</span>
-    </button>
-  </div>
-</header>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-mini">IPIN FILE HUB</div>
 
-<main class="wrap">
-  <section class="hero reveal">
-    <h1 class="hero-title">IPIN SCRIPT</h1>
-    <p class="hero-subtitle">Kumpulan script gratis. Klik detail sebelum download.</p>
-
-    <div class="hero-actions">
-      <a class="join primary click" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">Grup WhatsApp</a>
-      <a class="join click" href="https://whatsapp.com/channel/0029VbBKScNAInPfll7NHM0O" target="_blank" rel="noopener">Channel WhatsApp</a>
-      <a class="join click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
-      <a class="join click" href="https://youtube.com/@PinshopCik" target="_blank" rel="noopener">YouTube</a>
+      <button class="theme-toggle click" id="themeBtn" type="button" aria-label="Toggle theme">
+        <span class="theme-icon" id="themeIcon" aria-hidden="true">🌙</span>
+      </button>
     </div>
-  </section>
+  </header>
 
-  <section class="panel reveal">
-    <input id="search" class="search" placeholder="Cari script..." autocomplete="off">
-    <div id="list" class="grid"></div>
-    <div id="empty" class="empty" style="display:none;">Tidak ada hasil.</div>
-  </section>
+  <main class="wrap">
+    <section class="hero reveal">
+      <div class="hero-badge">FREE SCRIPT HUB</div>
 
-  <footer class="footer">© IPIN FILE HUB</footer>
-</main>
+      <h1 class="hero-title">IPIN SCRIPT</h1>
+      <p class="hero-subtitle">
+        Koleksi script gratis. Cek detail dulu, lalu download.
+      </p>
 
-<!-- MODAL -->
-<div class="overlay" id="modal" aria-hidden="true">
-  <div class="modal" role="dialog" aria-modal="true">
-    <h3 id="mName" style="margin:0 0 8px;">-</h3>
-    <p id="mDesc" style="margin:0;color:var(--muted);line-height:1.6">-</p>
-
-    <div class="hero-actions" style="margin-top:16px">
-      <a id="mDownload" class="join primary click" target="_blank" rel="noopener">Download</a>
-      <a class="join click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
-    </div>
-
-    <div style="margin-top:16px;text-align:center">
-      <button class="join click" id="closeModal" type="button">Tutup</button>
-    </div>
-  </div>
-</div>
-
-<!-- POPUP -->
-<div class="overlay" id="popup" aria-hidden="true">
-  <div class="modal" role="dialog" aria-modal="true">
-    <h3 style="margin:0 0 8px;">Gabung Komunitas</h3>
-    <p style="margin:0;color:var(--muted);line-height:1.6">Update script terbaru ada di grup dan Telegram.</p>
-
-    <div class="hero-actions" style="margin-top:16px">
-      <a class="join primary click" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">Grup WhatsApp</a>
-      <a class="join click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
-    </div>
-
-    <div style="margin-top:16px;text-align:center">
-      <button class="join click" id="closePopup" type="button">Tutup</button>
-    </div>
-  </div>
-</div>
-
-<script src="data.js"></script>
-<script>
-/* click sound */
-const clickSound = new Audio("click.mp3");
-clickSound.volume = 0.06;
-document.addEventListener("click", e => {
-  if (e.target.closest(".click")){
-    clickSound.currentTime = 0;
-    clickSound.play().catch(()=>{});
-  }
-});
-
-/* button hover sparkle position (for ripple shine) */
-document.addEventListener("pointermove", (e) => {
-  const btn = e.target.closest(".join");
-  if(!btn) return;
-  const r = btn.getBoundingClientRect();
-  const x = ((e.clientX - r.left) / r.width) * 100;
-  const y = ((e.clientY - r.top) / r.height) * 100;
-  btn.style.setProperty("--x", x + "%");
-  btn.style.setProperty("--y", y + "%");
-});
-
-/* theme */
-const root = document.documentElement;
-const themeBtn = document.getElementById("themeBtn");
-const themeIcon = document.getElementById("themeIcon");
-
-const savedTheme = localStorage.getItem("theme") || "dark";
-root.setAttribute("data-theme", savedTheme);
-themeIcon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
-
-themeBtn.addEventListener("click", () => {
-  document.body.classList.add("no-transitions");
-  const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-  root.setAttribute("data-theme", next);
-  localStorage.setItem("theme", next);
-  themeIcon.textContent = next === "dark" ? "🌙" : "☀️";
-  document.querySelector('meta[name="theme-color"]').setAttribute(
-    "content",
-    next === "dark" ? "#0f1326" : "#fff3f8"
-  );
-  setTimeout(() => document.body.classList.remove("no-transitions"), 180);
-});
-
-/* modal */
-const modal = document.getElementById("modal");
-const mName = document.getElementById("mName");
-const mDesc = document.getElementById("mDesc");
-const mDownload = document.getElementById("mDownload");
-
-function openModal(s){
-  mName.textContent = s.name || "-";
-  mDesc.textContent = s.desc || "-";
-  mDownload.href = s.link || "#";
-  modal.classList.add("show");
-}
-document.getElementById("closeModal").onclick = () => modal.classList.remove("show");
-modal.addEventListener("click", (e)=>{ if(e.target === modal) modal.classList.remove("show"); });
-
-/* popup */
-const popup = document.getElementById("popup");
-if(!sessionStorage.getItem("ipin_popup_v7")){
-  sessionStorage.setItem("ipin_popup_v7","1");
-  setTimeout(()=>popup.classList.add("show"), 900);
-}
-document.getElementById("closePopup").onclick = () => popup.classList.remove("show");
-popup.addEventListener("click", (e)=>{ if(e.target === popup) popup.classList.remove("show"); });
-
-/* render */
-const list = document.getElementById("list");
-const empty = document.getElementById("empty");
-const search = document.getElementById("search");
-
-function escapeHtml(s){
-  return String(s||"")
-    .replaceAll("&","&amp;").replaceAll("<","&lt;")
-    .replaceAll(">","&gt;").replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-function render(q=""){
-  list.innerHTML = "";
-  const f = q.trim().toLowerCase();
-
-  const items = (window.scripts || []).filter(s=>{
-    const hay = (s.name + " " + (s.desc||"")).toLowerCase();
-    return !f || hay.includes(f);
-  });
-
-  empty.style.display = items.length ? "none" : "block";
-
-  items.forEach(s=>{
-    const card = document.createElement("div");
-    card.className = "card reveal";
-    card.innerHTML = `
-      <h3>${escapeHtml(s.name)}</h3>
-      <p>${escapeHtml(s.desc || "")}</p>
-      <div class="card-row">
-        <button class="join click" type="button">Detail</button>
-        <span class="badge">Free</span>
+      <div class="hero-actions">
+        <a class="btn primary click" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">Grup WhatsApp</a>
+        <a class="btn click" href="https://whatsapp.com/channel/0029VbBKScNAInPfll7NHM0O" target="_blank" rel="noopener">Channel WhatsApp</a>
+        <a class="btn click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
+        <a class="btn click" href="https://youtube.com/@PinshopCik" target="_blank" rel="noopener">YouTube</a>
       </div>
-    `;
-    card.querySelector("button").onclick = () => openModal(s);
-    list.appendChild(card);
-  });
+    </section>
 
-  observeReveal();
-}
+    <section class="panel reveal">
+      <div class="panel-top">
+        <input id="search" class="search" placeholder="Cari script..." autocomplete="off">
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-num" id="totalFiles">0</div>
+            <div class="stat-label">Total file</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num" id="deviceDownloads">0</div>
+            <div class="stat-label">Download (device)</div>
+          </div>
+        </div>
+      </div>
 
-search.addEventListener("input", ()=> render(search.value));
+      <div id="list" class="grid"></div>
+      <div id="empty" class="empty" style="display:none;">Tidak ada hasil.</div>
+    </section>
 
-/* real reveal (IntersectionObserver) */
-let io;
-function observeReveal(){
-  if (io) io.disconnect();
-  const els = document.querySelectorAll(".reveal");
-  if(!("IntersectionObserver" in window)){
-    els.forEach(el=>el.classList.add("in"));
-    return;
-  }
-  io = new IntersectionObserver((entries)=>{
-    entries.forEach(en=>{
-      if(en.isIntersecting){
-        en.target.classList.add("in");
-        io.unobserve(en.target);
+    <footer class="footer">© GUDANG SC BOT</footer>
+  </main>
+
+  <!-- MODAL DETAIL -->
+  <div class="overlay" id="modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="mName">-</div>
+          <div class="modal-sub" id="mOneLine">-</div>
+        </div>
+        <button class="icon-btn click" id="closeModal" type="button" aria-label="Close">✕</button>
+      </div>
+
+      <div class="meta-grid" id="mMeta">
+        <!-- injected -->
+      </div>
+
+      <div class="modal-desc" id="mDesc">-</div>
+
+      <div class="modal-actions">
+        <a id="mDownload" class="btn primary click" target="_blank" rel="noopener">Download</a>
+        <a class="btn click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP -->
+  <div class="overlay" id="popup" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div class="modal-title">Gabung Komunitas</div>
+        <button class="icon-btn click" id="closePopup" type="button" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-desc">Update script terbaru ada di grup & Telegram.</div>
+      <div class="modal-actions">
+        <a class="btn primary click" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">Grup WhatsApp</a>
+        <a class="btn click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    /* ========= click sfx ========= */
+    const clickSound = new Audio("click.mp3");
+    clickSound.volume = 0.06;
+    document.addEventListener("click", e=>{
+      if(e.target.closest(".click")){
+        clickSound.currentTime = 0;
+        clickSound.play().catch(()=>{});
       }
     });
-  }, { rootMargin: "80px" });
-  els.forEach(el=>io.observe(el));
-}
 
-/* init */
-render("");
-observeReveal();
-</script>
+    /* ========= hover light for buttons ========= */
+    document.addEventListener("pointermove", (e) => {
+      const btn = e.target.closest(".btn");
+      if(!btn) return;
+      const r = btn.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * 100;
+      const y = ((e.clientY - r.top) / r.height) * 100;
+      btn.style.setProperty("--x", x + "%");
+      btn.style.setProperty("--y", y + "%");
+    });
+
+    /* ========= theme ========= */
+    const root = document.documentElement;
+    const themeBtn = document.getElementById("themeBtn");
+    const themeIcon = document.getElementById("themeIcon");
+
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    root.setAttribute("data-theme", savedTheme);
+    themeIcon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+    document.querySelector('meta[name="theme-color"]').setAttribute(
+      "content",
+      savedTheme === "dark" ? "#0b0f1f" : "#fff1f7"
+    );
+
+    themeBtn.addEventListener("click", () => {
+      document.body.classList.add("no-transitions");
+      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      themeIcon.textContent = next === "dark" ? "🌙" : "☀️";
+      document.querySelector('meta[name="theme-color"]').setAttribute(
+        "content",
+        next === "dark" ? "#0b0f1f" : "#fff1f7"
+      );
+      setTimeout(() => document.body.classList.remove("no-transitions"), 180);
+    });
+
+    /* ========= stats (device) ========= */
+    const dlKey = "ipin_device_downloads_v1";
+    const filesEl = document.getElementById("totalFiles");
+    const dlEl = document.getElementById("deviceDownloads");
+    function getDeviceDownloads(){ return Number(localStorage.getItem(dlKey) || "0"); }
+    function incDeviceDownloads(){
+      const n = getDeviceDownloads() + 1;
+      localStorage.setItem(dlKey, String(n));
+      dlEl.textContent = String(n);
+    }
+    dlEl.textContent = String(getDeviceDownloads());
+
+    /* ========= modal ========= */
+    const modal = document.getElementById("modal");
+    const mName = document.getElementById("mName");
+    const mOneLine = document.getElementById("mOneLine");
+    const mDesc = document.getElementById("mDesc");
+    const mDownload = document.getElementById("mDownload");
+    const mMeta = document.getElementById("mMeta");
+
+    function openModal(s){
+      mName.textContent = s.name || "-";
+      mOneLine.textContent = s.oneLine || (s.platform ? String(s.platform) : "Detail file");
+      mDesc.textContent = s.desc || "-";
+      mDownload.href = s.link || "#";
+
+      // metadata
+      const metaItems = [];
+      if (s.version) metaItems.push(["Version", s.version]);
+      if (s.size) metaItems.push(["Size", s.size]);
+      if (s.updated) metaItems.push(["Updated", s.updated]);
+      if (s.type) metaItems.push(["Type", s.type]);
+      if (s.platform) metaItems.push(["Platform", s.platform]);
+      if (s.tags && s.tags.length) metaItems.push(["Tags", s.tags.join(" · ")]);
+
+      mMeta.innerHTML = metaItems.map(([k,v]) => `
+        <div class="meta">
+          <div class="meta-k">${escapeHtml(k)}</div>
+          <div class="meta-v">${escapeHtml(v)}</div>
+        </div>
+      `).join("");
+
+      // count downloads per device
+      mDownload.onclick = () => incDeviceDownloads();
+
+      modal.classList.add("show");
+    }
+    function closeModal(){ modal.classList.remove("show"); }
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+    modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+
+    /* ========= popup ========= */
+    const popup = document.getElementById("popup");
+    const popKey = "ipin_popup_v100";
+    function closePopup(){ popup.classList.remove("show"); }
+    document.getElementById("closePopup").addEventListener("click", closePopup);
+    popup.addEventListener("click", (e)=>{ if(e.target === popup) closePopup(); });
+
+    if(!sessionStorage.getItem(popKey)){
+      sessionStorage.setItem(popKey, "1");
+      setTimeout(()=>popup.classList.add("show"), 900);
+    }
+
+    /* ========= render ========= */
+    const list = document.getElementById("list");
+    const empty = document.getElementById("empty");
+    const search = document.getElementById("search");
+
+    function escapeHtml(str){
+      return String(str || "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function render(q=""){
+      list.innerHTML = "";
+      const f = q.trim().toLowerCase();
+      const items = (window.scripts || []).filter(s=>{
+        const hay = (s.name + " " + (s.desc||"") + " " + (s.tags? s.tags.join(" "):"")).toLowerCase();
+        return !f || hay.includes(f);
+      });
+
+      filesEl.textContent = String(items.length || (window.scripts||[]).length);
+
+      empty.style.display = items.length ? "none" : "block";
+
+      items.forEach(s=>{
+        const card = document.createElement("div");
+        card.className = "card reveal";
+        card.innerHTML = `
+          <div class="card-top">
+            <div>
+              <div class="card-title">${escapeHtml(s.name)}</div>
+              <div class="card-sub">${escapeHtml(s.oneLine || s.desc || "")}</div>
+            </div>
+            <div class="pill">${escapeHtml(s.type || "Free")}</div>
+          </div>
+
+          <div class="card-meta">
+            <span class="chip">${escapeHtml(s.version ? ("v" + s.version) : "v1")}</span>
+            <span class="chip">${escapeHtml(s.size || "—")}</span>
+            <span class="chip">${escapeHtml(s.platform || "—")}</span>
+          </div>
+
+          <div class="card-actions">
+            <button class="btn click" type="button">Detail</button>
+            <a class="btn primary click" href="${escapeHtml(s.link || "#")}" target="_blank" rel="noopener">Download</a>
+          </div>
+        `;
+        card.querySelector("button").addEventListener("click", ()=>openModal(s));
+        card.querySelector("a").addEventListener("click", ()=>incDeviceDownloads());
+        list.appendChild(card);
+      });
+
+      observeReveal();
+    }
+
+    search.addEventListener("input", ()=>render(search.value));
+
+    /* ========= real reveal ========= */
+    let io;
+    function observeReveal(){
+      if(io) io.disconnect();
+      const els = document.querySelectorAll(".reveal");
+      if(!("IntersectionObserver" in window)){
+        els.forEach(el=>el.classList.add("in"));
+        return;
+      }
+      io = new IntersectionObserver((entries)=>{
+        entries.forEach(en=>{
+          if(en.isIntersecting){
+            en.target.classList.add("in");
+            io.unobserve(en.target);
+          }
+        });
+      }, {rootMargin:"90px"});
+      els.forEach(el=>io.observe(el));
+    }
+
+    render("");
+  </script>
 </body>
 </html>
