@@ -4,10 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IPIN FILE HUB</title>
-  <meta name="theme-color" content="#0b0f1f">
-
-  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#0d1022">
   <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -41,6 +40,7 @@
     <section class="panel reveal">
       <div class="panel-top">
         <input id="search" class="search" placeholder="Cari script..." autocomplete="off">
+
         <div class="stats">
           <div class="stat">
             <div class="stat-num" id="totalFiles">0</div>
@@ -57,7 +57,7 @@
       <div id="empty" class="empty" style="display:none;">Tidak ada hasil.</div>
     </section>
 
-    <footer class="footer">© GUDANG SC BOT</footer>
+    <footer class="footer">© IPIN FILE HUB</footer>
   </main>
 
   <!-- MODAL DETAIL -->
@@ -68,12 +68,11 @@
           <div class="modal-title" id="mName">-</div>
           <div class="modal-sub" id="mOneLine">-</div>
         </div>
+
         <button class="icon-btn click" id="closeModal" type="button" aria-label="Close">✕</button>
       </div>
 
-      <div class="meta-grid" id="mMeta">
-        <!-- injected -->
-      </div>
+      <div class="meta-grid" id="mMeta"></div>
 
       <div class="modal-desc" id="mDesc">-</div>
 
@@ -91,7 +90,9 @@
         <div class="modal-title">Gabung Komunitas</div>
         <button class="icon-btn click" id="closePopup" type="button" aria-label="Close">✕</button>
       </div>
+
       <div class="modal-desc">Update script terbaru ada di grup & Telegram.</div>
+
       <div class="modal-actions">
         <a class="btn primary click" href="https://chat.whatsapp.com/LvA30WKiFgB0t5yFjFmWsz?mode=hqrc" target="_blank" rel="noopener">Grup WhatsApp</a>
         <a class="btn click" href="https://t.me/IPINSHOP" target="_blank" rel="noopener">Telegram</a>
@@ -101,20 +102,25 @@
 
   <script src="data.js"></script>
   <script>
-    /* ========= click sfx ========= */
+    /* =============================
+       Click SFX
+       ============================= */
     const clickSound = new Audio("click.mp3");
     clickSound.volume = 0.06;
-    document.addEventListener("click", e=>{
-      if(e.target.closest(".click")){
+
+    document.addEventListener("click", (e) => {
+      if (e.target.closest(".click")) {
         clickSound.currentTime = 0;
         clickSound.play().catch(()=>{});
       }
     });
 
-    /* ========= hover light for buttons ========= */
+    /* =============================
+       Button "light spot" position
+       ============================= */
     document.addEventListener("pointermove", (e) => {
       const btn = e.target.closest(".btn");
-      if(!btn) return;
+      if (!btn) return;
       const r = btn.getBoundingClientRect();
       const x = ((e.clientX - r.left) / r.width) * 100;
       const y = ((e.clientY - r.top) / r.height) * 100;
@@ -122,7 +128,9 @@
       btn.style.setProperty("--y", y + "%");
     });
 
-    /* ========= theme ========= */
+    /* =============================
+       Theme (super smooth switch)
+       ============================= */
     const root = document.documentElement;
     const themeBtn = document.getElementById("themeBtn");
     const themeIcon = document.getElementById("themeIcon");
@@ -130,37 +138,51 @@
     const savedTheme = localStorage.getItem("theme") || "dark";
     root.setAttribute("data-theme", savedTheme);
     themeIcon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+
     document.querySelector('meta[name="theme-color"]').setAttribute(
       "content",
-      savedTheme === "dark" ? "#0b0f1f" : "#fff1f7"
+      savedTheme === "dark" ? "#0d1022" : "#fff1f7"
     );
 
     themeBtn.addEventListener("click", () => {
+      // Stop animation shortly to avoid heavy feel on mobile
       document.body.classList.add("no-transitions");
+      document.body.classList.add("freeze-motion");
+
       const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
       root.setAttribute("data-theme", next);
       localStorage.setItem("theme", next);
+
       themeIcon.textContent = next === "dark" ? "🌙" : "☀️";
       document.querySelector('meta[name="theme-color"]').setAttribute(
         "content",
-        next === "dark" ? "#0b0f1f" : "#fff1f7"
+        next === "dark" ? "#0d1022" : "#fff1f7"
       );
+
       setTimeout(() => document.body.classList.remove("no-transitions"), 180);
+      setTimeout(() => document.body.classList.remove("freeze-motion"), 600);
     });
 
-    /* ========= stats (device) ========= */
-    const dlKey = "ipin_device_downloads_v1";
+    /* =============================
+       Stats (device download counter)
+       ============================= */
+    const dlKey = "ipin_device_downloads_v2";
     const filesEl = document.getElementById("totalFiles");
     const dlEl = document.getElementById("deviceDownloads");
-    function getDeviceDownloads(){ return Number(localStorage.getItem(dlKey) || "0"); }
-    function incDeviceDownloads(){
+
+    function getDeviceDownloads() {
+      return Number(localStorage.getItem(dlKey) || "0");
+    }
+    function incDeviceDownloads() {
       const n = getDeviceDownloads() + 1;
       localStorage.setItem(dlKey, String(n));
       dlEl.textContent = String(n);
     }
     dlEl.textContent = String(getDeviceDownloads());
 
-    /* ========= modal ========= */
+    /* =============================
+       Modal logic
+       ============================= */
     const modal = document.getElementById("modal");
     const mName = document.getElementById("mName");
     const mOneLine = document.getElementById("mOneLine");
@@ -168,13 +190,21 @@
     const mDownload = document.getElementById("mDownload");
     const mMeta = document.getElementById("mMeta");
 
-    function openModal(s){
+    function escapeHtml(str) {
+      return String(str || "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function openModal(s) {
       mName.textContent = s.name || "-";
-      mOneLine.textContent = s.oneLine || (s.platform ? String(s.platform) : "Detail file");
+      mOneLine.textContent = s.oneLine || s.platform || "Detail file";
       mDesc.textContent = s.desc || "-";
       mDownload.href = s.link || "#";
 
-      // metadata
       const metaItems = [];
       if (s.version) metaItems.push(["Version", s.version]);
       if (s.size) metaItems.push(["Size", s.size]);
@@ -190,54 +220,62 @@
         </div>
       `).join("");
 
-      // count downloads per device
+      // count download
       mDownload.onclick = () => incDeviceDownloads();
 
       modal.classList.add("show");
     }
-    function closeModal(){ modal.classList.remove("show"); }
-    document.getElementById("closeModal").addEventListener("click", closeModal);
-    modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
 
-    /* ========= popup ========= */
-    const popup = document.getElementById("popup");
-    const popKey = "ipin_popup_v100";
-    function closePopup(){ popup.classList.remove("show"); }
-    document.getElementById("closePopup").addEventListener("click", closePopup);
-    popup.addEventListener("click", (e)=>{ if(e.target === popup) closePopup(); });
-
-    if(!sessionStorage.getItem(popKey)){
-      sessionStorage.setItem(popKey, "1");
-      setTimeout(()=>popup.classList.add("show"), 900);
+    function closeModal() {
+      modal.classList.remove("show");
     }
 
-    /* ========= render ========= */
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    /* =============================
+       Popup logic
+       ============================= */
+    const popup = document.getElementById("popup");
+    const popKey = "ipin_popup_final_v2";
+
+    function closePopup() {
+      popup.classList.remove("show");
+    }
+
+    document.getElementById("closePopup").addEventListener("click", closePopup);
+    popup.addEventListener("click", (e) => {
+      if (e.target === popup) closePopup();
+    });
+
+    if (!sessionStorage.getItem(popKey)) {
+      sessionStorage.setItem(popKey, "1");
+      setTimeout(() => popup.classList.add("show"), 900);
+    }
+
+    /* =============================
+       Render list
+       ============================= */
     const list = document.getElementById("list");
     const empty = document.getElementById("empty");
     const search = document.getElementById("search");
 
-    function escapeHtml(str){
-      return String(str || "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    function render(q=""){
+    function render(q = "") {
       list.innerHTML = "";
       const f = q.trim().toLowerCase();
-      const items = (window.scripts || []).filter(s=>{
-        const hay = (s.name + " " + (s.desc||"") + " " + (s.tags? s.tags.join(" "):"")).toLowerCase();
+
+      const all = window.scripts || [];
+      const items = all.filter(s => {
+        const hay = (s.name + " " + (s.desc||"") + " " + (s.tags ? s.tags.join(" ") : "")).toLowerCase();
         return !f || hay.includes(f);
       });
 
-      filesEl.textContent = String(items.length || (window.scripts||[]).length);
-
+      filesEl.textContent = String(all.length);
       empty.style.display = items.length ? "none" : "block";
 
-      items.forEach(s=>{
+      items.forEach(s => {
         const card = document.createElement("div");
         card.className = "card reveal";
         card.innerHTML = `
@@ -260,34 +298,36 @@
             <a class="btn primary click" href="${escapeHtml(s.link || "#")}" target="_blank" rel="noopener">Download</a>
           </div>
         `;
-        card.querySelector("button").addEventListener("click", ()=>openModal(s));
-        card.querySelector("a").addEventListener("click", ()=>incDeviceDownloads());
+        card.querySelector("button").addEventListener("click", () => openModal(s));
+        card.querySelector("a").addEventListener("click", () => incDeviceDownloads());
         list.appendChild(card);
       });
 
       observeReveal();
     }
 
-    search.addEventListener("input", ()=>render(search.value));
+    search.addEventListener("input", () => render(search.value));
 
-    /* ========= real reveal ========= */
+    /* =============================
+       Reveal (real)
+       ============================= */
     let io;
-    function observeReveal(){
-      if(io) io.disconnect();
+    function observeReveal() {
+      if (io) io.disconnect();
       const els = document.querySelectorAll(".reveal");
-      if(!("IntersectionObserver" in window)){
-        els.forEach(el=>el.classList.add("in"));
+      if (!("IntersectionObserver" in window)) {
+        els.forEach(el => el.classList.add("in"));
         return;
       }
-      io = new IntersectionObserver((entries)=>{
-        entries.forEach(en=>{
-          if(en.isIntersecting){
+      io = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (en.isIntersecting) {
             en.target.classList.add("in");
             io.unobserve(en.target);
           }
         });
-      }, {rootMargin:"90px"});
-      els.forEach(el=>io.observe(el));
+      }, { rootMargin: "90px" });
+      els.forEach(el => io.observe(el));
     }
 
     render("");
